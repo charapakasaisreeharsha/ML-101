@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ML Algorithm Blog</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <header>
+    <h1>ML-101</h1>
+  </header>
+
+  <div class="container">
+    <div class="search-bar" style="position: relative; width: 50%; margin: 0 auto 2rem auto; display: flex; align-items: center;">
+      <input id="searchInput" type="text" placeholder="Search algorithms..." style="flex: 1; padding-right: 0.5rem; border-top-right-radius: 0; border-bottom-right-radius: 0;" />
+      <button class="search-button" onclick="performSearch()">Search</button>
+    </div>
+      <div class="cards">
+        <div class="card">
+          <h2>Linear Regression</h2>
+          <p>Understand how linear regression works with math, code, and visual explanation.</p>
+          <button class="read-blog-button" onclick="openBlog()">Read Blog</button>
+        </div>
+        <!-- Future cards will go here -->
+      </div>
+  </div>
+
+  <div id="blog" style="display: none">
+      <div class="blog-content">
+  <div class="sidebar">
+    <button class="back-button" onclick="backToCards()">&larr; Back</button>
+    <ul>
+      <li onclick="scrollToSection('intro')">Introduction</li>
+      <li onclick="scrollToSection('math')">Math to Code</li>
+      <li onclick="scrollToSection('visualization')">Visualization</li>
+      <li onclick="scrollToSection('gradient-descent')">Gradient Descent</li>
+    </ul>
+  </div>
+  <div class="content-area">
+    <h2 id="intro">Introduction</h2>
+    <p>
+      Linear Regression is a supervised learning algorithm used to predict continuous values. While libraries like scikit-learn make this process simple with just a few lines of code, it's important to understand what actually happens under the hood. In this guide, you'll learn how Linear Regression works from scratch — using both mathematics and Python code — to build the model manually.
+    </p>
+
+    <h2 id="math">Math to Code</h2>
+    <p>
+      Let's start with a small dataset:
+      <br />
+      <code>x = [1, 2, 3, 4, 5]</code><br />
+      <code>y = [3, 2, 2, 4, 3]</code><br /><br />
+      We'll first calculate the means of x and y:
+    </p>
+    <pre><code>
+mean_x = np.mean(x)
+mean_y = np.mean(y)
+    </code></pre>
+    <p>
+      We use the formula for the regression line: <strong>y = mx + c</strong>. To get <code>m</code> (slope):
+    </p>
+    <pre><code>
+numerator = np.sum((x - mean_x) * (y - mean_y))
+denominator = np.sum((x - mean_x) ** 2)
+m = numerator / denominator
+    </code></pre>
+    <p>
+      Then the intercept <code>c</code> is:
+    </p>
+    <pre><code>
+c = mean_y - m * mean_x
+    </code></pre>
+    <p>Now you can make predictions:</p>
+    <pre><code>
+y_pred = m * x + c
+error_diff = y - y_pred
+    </code></pre>
+
+    <h2 id="visualization">Visualization</h2>
+    <p>To see the regression line and how well it fits the data:</p>
+    <pre><code>
+import matplotlib.pyplot as plt
+
+plt.scatter(x, y)
+plt.plot(x, y_pred, color='red')
+
+for i in range(len(x)):
+    plt.plot([x[i], x[i]], [y[i], y_pred[i]], color='gray')
+
+plt.show()
+    </code></pre>
+    <p>To evaluate model performance, we calculate the R² score:</p>
+    <pre><code>
+ss_total = np.sum((y - mean_y) ** 2)
+ss_residual = np.sum((y - y_pred) ** 2)
+r2_score = 1 - (ss_residual / ss_total)
+
+print("R² Score:", r2_score)
+    </code></pre>
+
+    <h2 id="gradient-descent">Gradient Descent</h2>
+    <p>
+      Gradient Descent is an optimization algorithm that helps adjust the slope and intercept to minimize prediction error. Think of it like descending a hill: you take steps (learning rate) until you reach the lowest point (minimum error).
+    </p>
+    <pre><code>
+def gradient_descent(learning_rate=0.01, epochs=1000):
+    m, c = 0.2, 2.2
+    n = len(x)
+    for _ in range(epochs):
+        y_pred = m * x + c
+        dm = (-2/n) * np.sum(x * (y - y_pred))
+        dc = (-2/n) * np.sum(y - y_pred)
+        m -= learning_rate * dm
+        c -= learning_rate * dc
+    return m, c
+
+m_gd, c_gd = gradient_descent()
+y_pred_gd = m_gd * x + c_gd
+    </code></pre>
+    <p>Visualize the optimized regression line:</p>
+    <pre><code>
+plt.scatter(x, y)
+plt.plot(x, y_pred_gd, color='green')
+plt.title("Best Fit Line Using Gradient Descent")
+plt.show()
+    </code></pre>
+    <p>
+      Now you've not only learned how Linear Regression works, but also how to build and optimize it from scratch. You're no longer just importing a model — you're understanding it.
+    </p>
+  </div>
+  </div>
+
+  <button id="scrollTopBtn" title="Go to top">&#8679;</button>
+
+    <script>
+      function openBlog() {
+        document.querySelector('.container').style.display = 'none';
+        document.getElementById('blog').style.display = 'block';
+        document.querySelector('button.back-button').style.display = 'block';
+      }
+  
+      function scrollToSection(id) {
+        const el = document.getElementById(id);
+        if (el) el.scrollIntoView({ behavior: 'smooth' });
+      }
+  
+      function backToCards() {
+        document.getElementById('blog').style.display = 'none';
+        document.querySelector('.container').style.display = 'block';
+        document.querySelector('button.back-button').style.display = 'none';
+      }
+
+      function performSearch() {
+        const query = document.getElementById('searchInput').value.trim();
+        if (query) {
+          alert('Search functionality is not implemented yet. You searched for: ' + query);
+        }
+      }
+
+      // Scroll to top button functionality
+      const scrollTopBtn = document.getElementById("scrollTopBtn");
+
+      window.onscroll = function() {
+        if (document.body.scrollTop > 100 || document.documentElement.scrollTop > 100) {
+          scrollTopBtn.style.display = "block";
+        } else {
+          scrollTopBtn.style.display = "none";
+        }
+      };
+
+      scrollTopBtn.addEventListener("click", function() {
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      });
+  </script>
+</body>
+</html>
