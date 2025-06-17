@@ -7,16 +7,21 @@
   <link rel="stylesheet" href="styles.css" />
 </head>
 <body>
-  <header>
+  <header class="animated-header">
     <h1>ML-101</h1>
+    <button id="hamburgerBtn" aria-label="Toggle menu" style="display:none;">
+      <span class="bar"></span>
+      <span class="bar"></span>
+      <span class="bar"></span>
+    </button>
   </header>
 
-  <div class="container">
+  <div class="container animated-container">
     <div class="search-bar" style="position: relative; width: 50%; margin: 0 auto 2rem auto; display: flex; align-items: center;">
       <input id="searchInput" type="text" placeholder="Search algorithms..." style="flex: 1; padding-right: 0.5rem; border-top-right-radius: 0; border-bottom-right-radius: 0;" />
       <button class="search-button" onclick="performSearch()">Search</button>
     </div>
-      <div class="cards">
+      <div class="cards animated-cards">
         <div class="card">
           <h2>Linear Regression</h2>
           <p>Understand how linear regression works with math, code, and visual explanation.</p>
@@ -134,8 +139,17 @@ plt.show()
     <script>
       function openBlog() {
         document.querySelector('.container').style.display = 'none';
-        document.getElementById('blog').style.display = 'block';
+        const blogContent = document.getElementById('blog');
+        blogContent.style.display = 'block';
+        blogContent.querySelector('div.blog-content').classList.add('fade-in');
         document.querySelector('button.back-button').style.display = 'block';
+
+        // Show hamburger button on mobile when blog is open
+        const hamburgerBtn = document.getElementById('hamburgerBtn');
+        if (window.innerWidth <= 480) {
+          hamburgerBtn.style.display = 'block';
+          document.querySelector('.sidebar').style.display = 'none';
+        }
       }
   
       function scrollToSection(id) {
@@ -144,9 +158,18 @@ plt.show()
       }
   
       function backToCards() {
-        document.getElementById('blog').style.display = 'none';
+        const blogContent = document.getElementById('blog');
+        blogContent.style.display = 'none';
+        blogContent.querySelector('div.blog-content').classList.remove('fade-in');
         document.querySelector('.container').style.display = 'block';
         document.querySelector('button.back-button').style.display = 'none';
+
+        // Hide hamburger button and show sidebar on mobile when going back
+        const hamburgerBtn = document.getElementById('hamburgerBtn');
+        if (window.innerWidth <= 480) {
+          hamburgerBtn.style.display = 'none';
+          document.querySelector('.sidebar').style.display = 'block';
+        }
       }
 
       function performSearch() {
@@ -159,11 +182,25 @@ plt.show()
       // Scroll to top button functionality
       const scrollTopBtn = document.getElementById("scrollTopBtn");
 
+      // Hamburger menu toggle
+      const hamburgerBtn = document.getElementById('hamburgerBtn');
+      hamburgerBtn.addEventListener('click', () => {
+        const sidebar = document.querySelector('.sidebar');
+        const backButton = document.querySelector('button.back-button');
+        if (sidebar.style.display === 'block' || sidebar.style.display === '') {
+          sidebar.style.display = 'none';
+          backButton.style.display = 'none';
+        } else {
+          sidebar.style.display = 'block';
+          backButton.style.display = 'block';
+        }
+      });
+
       window.onscroll = function() {
         if (document.body.scrollTop > 100 || document.documentElement.scrollTop > 100) {
-          scrollTopBtn.style.display = "block";
+          scrollTopBtn.classList.add("show");
         } else {
-          scrollTopBtn.style.display = "none";
+          scrollTopBtn.classList.remove("show");
         }
       };
 
