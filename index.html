@@ -14,6 +14,12 @@
       <span class="bar"></span>
       <span class="bar"></span>
     </button>
+    <div id="hamburgerMenuContent" class="hamburger-menu-content" style="display:none;">
+      <ul id="cardTitlesList">
+        <li data-card="0">Linear Regression</li>
+        <!-- Add future card titles here -->
+      </ul>
+    </div>
   </header>
 
   <div class="container animated-container">
@@ -184,17 +190,18 @@ plt.show()
 
       // Hamburger menu toggle
       const hamburgerBtn = document.getElementById('hamburgerBtn');
+      const hamburgerMenuContent = document.getElementById('hamburgerMenuContent');
       hamburgerBtn.addEventListener('click', () => {
         const container = document.querySelector('.container');
         const sidebar = document.querySelector('.sidebar');
         const backButton = document.querySelector('button.back-button');
         const blog = document.getElementById('blog');
         if (container.style.display !== 'none') {
-          // On homepage, toggle container visibility
-          if (container.style.display === 'block' || container.style.display === '') {
-            container.style.display = 'none';
+          // On homepage, toggle hamburger menu content visibility
+          if (hamburgerMenuContent.style.display === 'block') {
+            hamburgerMenuContent.style.display = 'none';
           } else {
-            container.style.display = 'block';
+            hamburgerMenuContent.style.display = 'block';
           }
         } else if (blog.style.display !== 'none') {
           // On blog view, toggle sidebar and back button visibility
@@ -205,6 +212,20 @@ plt.show()
             sidebar.style.display = 'block';
             backButton.style.display = 'block';
           }
+        }
+      });
+
+      // Handle click on card title in hamburger menu
+      const cardTitlesList = document.getElementById('cardTitlesList');
+      cardTitlesList.addEventListener('click', (event) => {
+        if (event.target && event.target.nodeName === 'LI') {
+          const cardIndex = event.target.getAttribute('data-card');
+          // Close hamburger menu content
+          hamburgerMenuContent.style.display = 'none';
+          // Open the corresponding card content
+          openBlog();
+          // Optionally, scroll to the card or highlight it
+          // For now, just open the blog content
         }
       });
 
