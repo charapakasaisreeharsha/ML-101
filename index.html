@@ -185,14 +185,26 @@ plt.show()
       // Hamburger menu toggle
       const hamburgerBtn = document.getElementById('hamburgerBtn');
       hamburgerBtn.addEventListener('click', () => {
+        const container = document.querySelector('.container');
         const sidebar = document.querySelector('.sidebar');
         const backButton = document.querySelector('button.back-button');
-        if (sidebar.style.display === 'block' || sidebar.style.display === '') {
-          sidebar.style.display = 'none';
-          backButton.style.display = 'none';
-        } else {
-          sidebar.style.display = 'block';
-          backButton.style.display = 'block';
+        const blog = document.getElementById('blog');
+        if (container.style.display !== 'none') {
+          // On homepage, toggle container visibility
+          if (container.style.display === 'block' || container.style.display === '') {
+            container.style.display = 'none';
+          } else {
+            container.style.display = 'block';
+          }
+        } else if (blog.style.display !== 'none') {
+          // On blog view, toggle sidebar and back button visibility
+          if (sidebar.style.display === 'block' || sidebar.style.display === '') {
+            sidebar.style.display = 'none';
+            backButton.style.display = 'none';
+          } else {
+            sidebar.style.display = 'block';
+            backButton.style.display = 'block';
+          }
         }
       });
 
